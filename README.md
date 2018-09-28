@@ -1,4 +1,4 @@
-# img-slider
+# elm-slider
 
 A simple image slider build to learn Elm. Currently a work in progress. I hope
 to get it to a similar stage as one of my other projects
