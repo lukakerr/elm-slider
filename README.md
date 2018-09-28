@@ -13,3 +13,6 @@ Building is simple
 $ elm make src/Slider.elm
 $ open index.html
 ```
+
+> Note: there are 3 images (1.jpg, 2.jpg, 3.jpg) under `.gitignore`, you will
+> have to create these manually inside an `/img` folder to see the images
