@@ -1,11 +1,15 @@
 import Array
 import Browser
-import Html exposing (Html, button, div, text, img)
-import Html.Attributes exposing (src, width, height)
-import Html.Events exposing (onClick)
+import Css exposing (..)
+import Css.Global exposing (global)
+import Html
+import Html.Styled exposing (..)
+import Html.Styled.Attributes exposing (css, href, src)
+import Html.Styled.Events exposing (onClick)
 
+main : Program () Model Msg
 main =
-  Browser.sandbox { init = init, update = update, view = view }
+    Browser.sandbox { init = init, update = update, view = view >> toUnstyled }
 
 
 -- MODEL
@@ -48,18 +52,29 @@ update msg model =
 
 -- VIEW
 
+image : String -> Html msg
+image source =
+    img [ src source
+      , css [ width (pct 100) ] ]
+    []
+
 currImage : (Int, List String) -> Html Msg
 currImage (current, images) =
-  let curr = Array.get current (Array.fromList images) in
-    case curr of
-      Just imgSrc -> img [ src imgSrc, width 600, height 400 ] []
-      Nothing -> img [] []
+  case Array.get current <| Array.fromList images of
+    Just imgSrc -> image imgSrc
+    Nothing -> img [] []
+
+body : List (Attribute msg) -> List (Html msg) -> Html msg
+body attributes children =
+  styled div [] attributes (global
+    [ Css.Global.html [ margin (px 0) ]
+    , Css.Global.body [ margin (px 0) ]
+    ] :: children)
 
 view : Model -> Html Msg
 view model =
-  div []
-    [ currImage (model.current, model.images)
+  body [] [ currImage (model.current, model.images)
     , button [ onClick Left ] [ text "left" ]
     , button [ onClick Right ] [ text "right" ]
     , div [] [ text (String.fromInt model.current) ]
-    ]
+  ]
