@@ -1,7 +1,7 @@
 import Array
 import Browser
 import Css exposing (..)
-import Css.Global exposing (global)
+import Css.Global exposing (Snippet, global)
 import Html
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (css, href, src)
@@ -55,7 +55,7 @@ update msg model =
 image : String -> Html msg
 image source =
     img [ src source
-      , css [ width (pct 100) ] ]
+      , css [ width (pct 100), height (px 600) ] ]
     []
 
 currImage : (Int, List String) -> Html Msg
@@ -63,6 +63,25 @@ currImage (current, images) =
   case Array.get current <| Array.fromList images of
     Just imgSrc -> image imgSrc
     Nothing -> img [] []
+
+cursorBtn : List Style -> Html Msg
+cursorBtn styles =
+  div [
+    onClick Left
+    , css <| [
+      position absolute
+      , width (pct 50)
+      , height (px 600)
+      , top (px 0)
+      , cursor wResize
+    ] ++ styles
+  ] []
+
+leftBtn : Html Msg
+leftBtn = cursorBtn [ left (px 0), cursor wResize ]
+
+rightBtn : Html Msg
+rightBtn = cursorBtn [ right (px 0), cursor eResize ]
 
 body : List (Attribute msg) -> List (Html msg) -> Html msg
 body attributes children =
@@ -74,7 +93,7 @@ body attributes children =
 view : Model -> Html Msg
 view model =
   body [] [ currImage (model.current, model.images)
-    , button [ onClick Left ] [ text "left" ]
-    , button [ onClick Right ] [ text "right" ]
+    , leftBtn
+    , rightBtn
     , div [] [ text (String.fromInt model.current) ]
   ]
