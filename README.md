@@ -5,6 +5,8 @@ to get it to a similar stage as one of my other projects
 [lightweight-slider](https://github.com/lukakerr/lightweight-slider) sometime in
 the future.
 
+View the current progress at [lukakerr.github.io/elm-slider/index.html](https://lukakerr.github.io/elm-slider/index.html)
+
 ### Build
 
 Building is simple
