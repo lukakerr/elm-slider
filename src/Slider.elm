@@ -54,8 +54,13 @@ update msg model =
 
 image : String -> Html msg
 image source =
-    img [ src source
-      , css [ width (pct 100), height (px 600) ] ]
+    img [
+      src source
+      , css [
+        width (pct 100)
+        , height (pct 600)
+      ]
+    ]
     []
 
 currImage : (Int, List String) -> Html Msg
@@ -64,10 +69,10 @@ currImage (current, images) =
     Just imgSrc -> image imgSrc
     Nothing -> img [] []
 
-cursorBtn : List Style -> Html Msg
-cursorBtn styles =
+cursorBtn : Msg -> List Style -> Html Msg
+cursorBtn action styles =
   div [
-    onClick Left
+    onClick action
     , css <| [
       position absolute
       , width (pct 50)
@@ -78,14 +83,19 @@ cursorBtn styles =
   ] []
 
 leftBtn : Html Msg
-leftBtn = cursorBtn [ left (px 0), cursor wResize ]
+leftBtn = cursorBtn Left [ left (px 0), cursor wResize ]
 
 rightBtn : Html Msg
-rightBtn = cursorBtn [ right (px 0), cursor eResize ]
+rightBtn = cursorBtn Right [ right (px 0), cursor eResize ]
 
 body : List (Attribute msg) -> List (Html msg) -> Html msg
 body attributes children =
-  styled div [] attributes (global
+  styled div [] ([
+    css [
+      width (pct 100)
+      , display block
+      , position relative
+    ] ] ++ attributes) (global
     [ Css.Global.html [ margin (px 0) ]
     , Css.Global.body [ margin (px 0) ]
     ] :: children)
